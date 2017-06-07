@@ -17,6 +17,8 @@ func main() {
 	r.HandleFunc("/_hc", HealthCheckHandler)
 	r.HandleFunc("/", Root)
 
+	// TODO:  Handle incoming port env var.  Don't hard code to 8080
+
 	srv := &http.Server{
 		Handler:      r,
 		Addr:         "0.0.0.0:8080",
