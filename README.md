@@ -28,3 +28,8 @@ public Docker Hub repo.
 
     docker login --password=$DOCKERHUB_PWD --username=mickeyyawn
     docker push mickeyyawn/foo
+
+As an additional exercise, you can pull the public image you just pushed and
+crank it up (instead of building it manually as we did above.)
+
+    docker pull mickeyyawn/foo
