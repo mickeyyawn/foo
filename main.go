@@ -1,17 +1,38 @@
 package main
 
 import (
+	"encoding/json"
+	"github.com/gobuffalo/packr"
 	"github.com/gorilla/mux"
 	"html/template"
-	"io"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 )
+
+var (
+	sha1      string // sha1 revision used to build the program
+	buildTime string // when the executable was built
+
+	js   []byte
+	err  error
+	html string
+)
+
+type Health struct {
+	Version   string
+	BuildTime string
+}
 
 func main() {
 
 	log.Println("Starting foo app.")
+
+	log.Printf("Built on %s from sha1 %s\n", buildTime, sha1)
+
+	box := packr.NewBox("./assets")
+	html = box.String("index.html")
 
 	r := mux.NewRouter()
 	r.HandleFunc("/_hc", HealthCheckHandler)
@@ -32,25 +53,6 @@ func main() {
 
 func Root(w http.ResponseWriter, req *http.Request) {
 
-	html := `<!doctype html>
-	           <head>
-	             <title>hello world!</title>
-	             <style>
-	               body {
-	               	background-color:red;
-				    font-family: 'Raleway', serif;
-				    font-size:24pt;
-				    font-weight:400;
-	               	color: white;
-	               }
-	             </style>
-	             <link href="https://fonts.googleapis.com/css?family=Raleway:400" rel="stylesheet">
-	           </head>
-	           <body>
-	             <h1>Hello World from golang!</h1>
-	           </body>
-           </html>`
-
 	template, err := template.New("name").Parse(html)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -62,5 +64,30 @@ func Root(w http.ResponseWriter, req *http.Request) {
 
 // health check...
 func HealthCheckHandler(w http.ResponseWriter, req *http.Request) {
-	io.WriteString(w, "hello, world!\n")
+
+	health := Health{sha1, buildTime}
+
+	js, err = json.Marshal(health)
+
+	if err != nil {
+		log.Println("Error")
+		log.Println(err)
+	}
+
+	serveJSON(w, js)
+}
+
+func servePlainText(w http.ResponseWriter, s string) {
+	w.Header().Set("Content-Type", "text/plain")
+	w.Header().Set("Content-Length", strconv.Itoa(len(s)))
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(s))
+}
+
+func serveJSON(w http.ResponseWriter, js []byte) {
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(js)
+
 }
