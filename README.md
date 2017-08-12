@@ -36,3 +36,5 @@ As an additional exercise, you can pull the public image you just pushed and
 crank it up (instead of building it manually as we did above.)
 
     docker pull mickeyyawn/foo
+
+TODO: Add k8s yml def.
