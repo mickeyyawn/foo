@@ -38,3 +38,4 @@ crank it up (instead of building it manually as we did above.)
     docker pull mickeyyawn/foo
 
 TODO: Add k8s yml def.
+TODO: Add quay example push/pull
