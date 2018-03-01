@@ -36,7 +36,10 @@ RUN curl -LJO https://github.com/gobuffalo/packr/releases/download/v1.10.4/packr
 RUN tar -xvzf packr_1.10.4_linux_amd64.tar.gz
 
 # now let's actually build a linux executable binary from go source.  much excite!
-RUN GOOS=linux CGO_ENABLED=0 $GOPATH/src/github.com/mickeyyawn/foo/packr build -a -o foo
+# we use a bash script because we want to extract the git revision and a timestamp
+# when this binary was actually built.  we expose that in the healtcheck route.
+
+RUN sh build.sh
 
 
 
@@ -63,7 +66,8 @@ RUN mkdir app
 WORKDIR /app
 
 # Copy the binary we built in the "build" stage over to this stage
-COPY --from=build /go/src/github.com/mickeyyawn/foo/foo /app/
+#COPY --from=build /go/src/github.com/mickeyyawn/foo/foo /app/
+COPY --from=build /go/src/github.com/mickeyyawn/foo/builds/linux/foo /app/
 
 # Tell docker that is what we want to exec when Docker starts this container
 ENTRYPOINT ./foo
