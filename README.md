@@ -37,3 +37,18 @@ crank it up (instead of building it manually as we did above.)
 
     docker pull mickeyyawn/foo
 
+
+
+
+Demonstrates:
+
+	Dependency management using dep.
+	Asset bundling using packr.
+	Building go binary using multi-stage dockerfile.
+	Using Alpine to minimize docker image size.
+	Healthcheck routes.
+	Using Gorilla Mux for lightweight route handling.
+	Building/tagging docker image.
+	Pushing docker image to docker hub.
+
+
