@@ -39,7 +39,7 @@ curl 127.0.0.1:8080/_hc
 ```
 or...
 
-Open your browser and navigate to htttp://127.0.0.1:8080 to see Foo in all of it's glory
+Open your browser and navigate to http://127.0.0.1:8080 to see Foo in all of it's glory
 If all goes well, you should see a page proclaiming: "Hello, this is the foo app."
 
 
