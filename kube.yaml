@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: foo-app-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: foo-app
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: foo-app
+spec:
+  selector:
+    matchLabels:
+      app: foo-app
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: foo-app
+    spec:
+      containers:
+      - name: foo
+        image: mickeyyawn/foo:latest
+        ports:
+        - containerPort: 8080
