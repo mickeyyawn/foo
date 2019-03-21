@@ -2,13 +2,15 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/gobuffalo/packr"
-	"github.com/gorilla/mux"
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
+
+	"github.com/gobuffalo/packr"
+	"github.com/gorilla/mux"
 )
 
 var (
@@ -38,11 +40,14 @@ func main() {
 	r.HandleFunc("/_hc", HealthCheckHandler)
 	r.HandleFunc("/", Root)
 
-	// TODO:  Handle incoming port env var.  Don't hard code to 8080
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 
 	srv := &http.Server{
 		Handler:      r,
-		Addr:         "0.0.0.0:8080",
+		Addr:         "0.0.0.0:" + port,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
