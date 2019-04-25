@@ -50,3 +50,8 @@ docker login --password=$DOCKERHUB_PWD --username=mickeyyawn
 docker push mickeyyawn/foo
 docker pull mickeyyawn/foo
 ```
+
+
+## Run in local kubernetes
+
+kubectl apply -f kube.yaml
