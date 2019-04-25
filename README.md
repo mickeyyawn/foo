@@ -55,3 +55,7 @@ docker pull mickeyyawn/foo
 ## Run in local kubernetes
 
 kubectl apply -f kube.yaml
+
+## then verify it is running
+
+http://localhost
